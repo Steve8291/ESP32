@@ -1,27 +1,30 @@
 #include <Arduino.h>
 
-// POTENTIOMETER
+/*
+ * FADE LED
+ * 
+ * Fades an LED using PWM (Pulse Width Modulation)
+ */
 
-  // Measure the position of a potentiometer and use it to
-  // control the blink rate of an LED. Turn the knob to make
-  // it blink faster or slower!
-
-int sensorPin = GPIO_NUM_33;  // The potentiometer is connected to analog pin 33
-int ledPin = GPIO_NUM_16;     // The LED is connected to digital pin 16
-
+const int ledPin = GPIO_NUM_16; // GPIO pin where the LED is connected
+const int timeDelay = 15;      // Delay time in milliseconds
 
 void setup() {
   pinMode(ledPin, OUTPUT);
-  pinMode(sensorPin, INPUT);
 }
 
-void loop() {
-  int sensorValue;
-  sensorValue = analogRead(sensorPin);
+void loop(){
+  // increase the LED brightness
+  for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++){
+    // changing the LED brightness with PWM
+    analogWrite(ledPin, dutyCycle);
+    delay(timeDelay);
+  }
 
-  digitalWrite(ledPin, HIGH);
-  delay(sensorValue);
-
-  digitalWrite(ledPin, LOW);
-  delay(sensorValue);
+  // decrease the LED brightness
+  for(int dutyCycle = 255; dutyCycle >= 0; dutyCycle--){
+    // changing the LED brightness with PWM
+    analogWrite(ledPin, dutyCycle);
+    delay(timeDelay);
+  }
 }
