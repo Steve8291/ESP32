@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 /*
- * RGB LED
+ * RGB LED Common Cathode (-)
  * 
  * Uses functions to control an RGB LED.
  */
@@ -75,16 +75,6 @@ void mainColors() {
   
 }
 
-void showSpectrum() {
-  int x;
-
-  for (x = 0; x < 768; x++) {
-    showRGB(x);   // Call RGBspectrum() with our new x
-    delay(10);    // Delay 10 ms
-
-  }
-}
-
 
 void showRGB(int color) {
   int redIntensity;
@@ -112,6 +102,16 @@ void showRGB(int color) {
   analogWrite(BLUE_PIN, blueIntensity);
   analogWrite(GREEN_PIN, greenIntensity);
 
+}
+
+void showSpectrum() {
+  int x;
+
+  for (x = 0; x < 768; x++) {
+    showRGB(x);   // Call RGBspectrum() with our new x
+    delay(10);    // Delay 10 ms
+
+  }
 }
 
 void setup() {
