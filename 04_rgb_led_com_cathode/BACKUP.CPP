@@ -46,7 +46,7 @@ void purpleLight(int duration = 1000) {
   analogWrite(GREEN_PIN, 255);
   analogWrite(BLUE_PIN, 0);
   delay(duration);
-}
+} 
 
 void setup() {
   pinMode(RED_PIN, OUTPUT);
@@ -61,6 +61,5 @@ void loop() {
   greeenLight(4000);
   blueLight(4000);
   purpleLight(4000);
-
 
 }
