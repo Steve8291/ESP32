@@ -40,6 +40,13 @@ void offLight(int duration = 1000) {
   digitalWrite(BLUE_PIN, HIGH);
   delay(duration);
 }
+void purpleLight(int duration = 1000) {
+  // Purple
+  analogWrite(RED_PIN, 0);
+  analogWrite(GREEN_PIN, 255);
+  analogWrite(BLUE_PIN, 0);
+  delay(duration);
+}
 
 void myColor(int duration = 1000) {
   // My Color
@@ -61,6 +68,6 @@ void loop() {
   blueLight(4000);
   greeenLight(4000);
   redLight(4000);
-  // myColor(4000);
-
+  purpleLight(4000);
+  myColor(4000);
 }
