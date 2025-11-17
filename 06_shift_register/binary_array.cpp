@@ -21,7 +21,7 @@ void setup ()
 }
 void loop()
 {
-  for(int num = 0; num <10; num++)
+  for(int num = 0; num < 9; num++)
   {
     digitalWrite(STcp,LOW); //ground ST_CP and hold low for as long as you are transmitting
     shiftOut(DS,SHcp,MSBFIRST,datArray[num]);
