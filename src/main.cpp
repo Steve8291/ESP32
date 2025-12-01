@@ -1,31 +1,70 @@
 /*
- * Usees an int array to store several 8 bit binary numbers that are used to 
- * change the working state of the eight LEDs controlled by 74HC595.
- * https://docs.sunfounder.com/projects/esp32-starter-kit/en/latest/arduino/basic_projects/ar_74hc595.html
+Control multiple LEDs with an ESP32 and a 74HC595 shift register.
+Define the data, latch, and clock pins.
+Use the `shiftOut()` function to send a byte to the shift register.
+In the `loop()` function, create patterns for the LEDs in a `byte` variable,
+update the register, and add a delay to see the effect.
 */
 
 #include <Arduino.h>
 
-const int STcp = 22;//ST_CP
-const int SHcp = 23;//SH_CP 
-const int DS = 21; //DS 
+// Pin definitions for ESP32 and 74HC595
+const int latchPin = 22;  // Pin connected to the ST_CP pin of the 74HC595
+const int clockPin = 23;  // Pin connected to the SH_CP pin of the 74HC595
+const int dataPin = 21;   // Pin connected to the DS pin of the 74HC595
 
-int datArray[] = {B00000000, B00000001, B00000011, B00000111, B00001111, B00011111, B00111111, B01111111, B11111111};
+// Variable to hold the state of the LEDs (8 bits for 8 LEDs)
+byte leds = 0;
 
-void setup ()
-{
-  //set pins to output
-  pinMode(STcp,OUTPUT);
-  pinMode(SHcp,OUTPUT);
-  pinMode(DS,OUTPUT);
+// Function to update the shift register with the current state of the leds byte
+void updateShiftRegister() {
+  digitalWrite(latchPin, LOW);  // Set latch pin LOW to prevent changes while shifting
+  shiftOut(dataPin, clockPin, MSBFIRST, leds); // Send the byte to the shift register
+  digitalWrite(latchPin, HIGH); // Set latch pin HIGH to update the output pins
 }
-void loop()
-{
-  for(int num = 0; num < 9; ++num)
-  {
-    digitalWrite(STcp,LOW); //ground ST_CP and hold low for as long as you are transmitting
-    shiftOut(DS,SHcp,MSBFIRST,datArray[num]);
-    digitalWrite(STcp,HIGH); //pull the ST_CPST_CP to save the data
-    delay(1000);
+
+
+void ledsOff() {
+  leds = 0; // Reset all bits to LOW
+  updateShiftRegister();
+}
+
+
+
+void setup() {
+  // Initialize the pins as outputs
+  pinMode(latchPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
+  pinMode(dataPin, OUTPUT);
+  updateShiftRegister();
+}
+
+void loop() {
+  // Example 1: Light up all LEDs one by one
+  for (int i = 0; i < 8; i++) {
+    bitSet(leds, i); // Set the i-th bit to HIGH
+    updateShiftRegister();
+    delay(500); // Wait before turning on the next LED
+  }
+
+  delay(1000);
+  ledsOff();
+  delay(1000);
+
+  // Example 3: Create a "Knight Rider" effect by moving a single LED
+  for (int i = 0; i < 8; i++) {
+
+    for (int i = 0; i < 8; i++) {
+      bitSet(leds, i);
+      updateShiftRegister();
+      bitClear(leds, i);
+      delay(200);
+    }
+    for (int i = 6; i > 0; i--) {  // Start from 6 to avoid repeating the end LED
+      bitSet(leds, i);
+      updateShiftRegister();
+      bitClear(leds, i);
+      delay(200);
+    }
   }
 }
