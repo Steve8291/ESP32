@@ -23,11 +23,10 @@ byte digits[] = {
   };
 
 byte blank = B11111111; // All segments off
-
+// byte blank_hex = 0xFF; // All segments off
 
 // byte digits_array[11] = {0x3, 0x9F, 0x25, 0xD, 0x99, 0x49, 0x41, 0x1F, 0x1, 0x9}; // Hex values for digits 0-9
 
-// byte blank = 0xFF; // All segments off
 
 // Function to update the shift register with byte patterns.
 void updateShiftRegister(byte pattern) {
