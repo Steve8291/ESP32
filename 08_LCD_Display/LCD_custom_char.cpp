@@ -2,6 +2,7 @@
 #include <LiquidCrystal_I2C.h>  // https://github.com/johnrickman/LiquidCrystal_I2C.git
 
 // https://maxpromer.github.io/LCD-Character-Creator/
+// LCD's can store up to 8 custom characters in memory (0-7)
 
 // set the LCD number of columns and rows
 int lcdColumns = 16;
@@ -11,6 +12,7 @@ int lcdRows = 2;
 // if you don't know your display address, run an I2C scanner sketch
 LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);  
 
+// Define a custom character as an 8 byte array
 byte heart[] = {
   B00000,
   B00000,
@@ -32,7 +34,8 @@ void setup(){
   lcd.init();
   // turn on LCD backlight                      
   lcd.backlight();
-  lcd.createChar(0, heart); // create a custom character at position 0
+  // Store custom character in the LCD's memory at index 0
+  lcd.createChar(0, heart);
 }
 
 void loop(){
