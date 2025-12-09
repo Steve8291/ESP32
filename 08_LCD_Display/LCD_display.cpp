@@ -1,28 +1,32 @@
-# include <Arduino.h>
-#include <Wire.h> 
-#include <LiquidCrystal_I2C.h>  // marcoschwartz/LiquidCrystal_I2C
+#include <Arduino.h>
+#include <LiquidCrystal_I2C.h>  // https://github.com/johnrickman/LiquidCrystal_I2C.git
 
-// Display characters with the I2C LCD1602 
+// set the LCD number of columns and rows
+int lcdColumns = 16;
+int lcdRows = 2;
 
-//SDA->21,SCL->22 
-LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+// set LCD address, number of columns and rows
+// if you don't know your display address, run an I2C scanner sketch
+LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);  
 
-int count = 0;
-
-void setup()
-{
-  lcd.init();// initialize the lcd 
-  lcd.backlight(); // Turns on the LCD backlight.
-  lcd.print("Hello, world!");   // Print a message to the LCD.
-  delay(3000);
+void setup(){
+  // initialize LCD
+  lcd.init();
+  // turn on LCD backlight                      
+  lcd.backlight();
 }
 
-void loop()
-{
-  lcd.clear(); 
-  lcd.setCursor(0, 0); // Sets the cursor position to the first row and first column (0, 0).
-  lcd.print("COUNT: ");
-  lcd.print(count); // Prints the current value of the count variable.
+void loop(){
+  // set cursor to first column, first row
+  lcd.setCursor(0, 0);
+  // print message
+  lcd.print("Hello, World!");
   delay(1000);
-  count++; // Increments the counter by 1. 
+  // clears the display to print new message
+  lcd.clear();
+  // set cursor to first column, second row
+  lcd.setCursor(0,1);
+  lcd.print("Hello, World!");
+  delay(1000);
+  lcd.clear(); 
 }
