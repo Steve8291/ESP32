@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "pitches.h"
 
-// Uses Passive Buzzer connected to BUZZER_PIN
+// Uses Passive 5v Buzzer (CYT1008) connected to BUZZER_PIN
 
 /*
 Using newer `ledcAttach` and `ledcWrite` functions for ESP32 PWM control.
@@ -15,11 +15,13 @@ const int TOUCH_PINS[] = { 4, 15, 13, 12, 14, 27, 33, 32 };
 
 // PWM Settings (for ESP32)
 const int PWM_CHANNEL = 0; // Use Channel 0
-const int PWM_FREQ = 2000; // 2kHz frequency (adjust from 2000 - 4000 if needed)
+// Matching pwm frequency to resonant frequency increases loudness
+const int PWM_FREQ = 2048; // CYT1008 resonant frequency is 2kHz - 4kHz
 const int PWM_RESOLUTION = 8; // 8-bit resolution (0-255)
 
 // Define the musical notes
-const int TONE[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5 }; 
+const int TONE[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, 
+  NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5 }; 
 
 int threshold = 30;
 
@@ -38,6 +40,7 @@ void setup() {
 void loop() {
   // Loop through each touch pin
   for (int i = 0; i < 8; i++) {
+
     // Read and print the touch value
     // Comment out serial print to eliminate wobbling delay.
     int touchValue = touchRead(TOUCH_PINS[i]);
@@ -47,10 +50,10 @@ void loop() {
 
     // Check if the current touch pin is being touched
     if (touchValue < threshold) {
-      ledcWrite(BUZZER_PIN, TONE[i]);
-      delay(150);
+      ledcWriteTone(BUZZER_PIN, TONE[i]);
+      delay(150);  // Try commenting out delay to reduce wobble
     } else {
-      ledcWrite(BUZZER_PIN, 0); // Stop the tone after duration 
+      ledcWriteTone(BUZZER_PIN, 0); // Stop the tone after duration 
     }
   }
 }

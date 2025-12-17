@@ -1,35 +1,50 @@
 #include <Arduino.h>
+#include "pitches.h"
 
-// Pin definitions for ESP32 and 74HC595
-const int latchPin = 22;  // Pin connected to the ST_CP pin of the 74HC595
-const int clockPin = 23;  // Pin connected to the SH_CP pin of the 74HC595
-const int dataPin = 21;   // Pin connected to the DS pin of the 74HC595
+const int BUZZER_PIN = 25; // the buzzer pin
+const int TOUCH_PINS[] = { 4, 15, 13, 12, 14, 27, 33, 32 };
 
-// Array to store the segment patterns for digits 0-9 and a blank (all off)
-// For a common cathode (+) a '0' (LOW) turns on a segment, a '1' (HIGH) turns it off.
-byte digits[] = {
-  // a  b  c  d  e  f  g  DP
-  B00111110, // 0
-  B11111001 // 1
-  };
+// PWM Settings (for ESP32)
+const int PWM_CHANNEL = 0; // Use Channel 0
+const int PWM_FREQ = 2000; // 2kHz frequency
+const int PWM_RESOLUTION = 8; // 8-bit resolution (0-255)
 
+// Define the musical notes
+const int TONE[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, 
+  NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5 }; 
 
-
-// Function to update the shift register with byte patterns.
-void updateShiftRegister(byte pattern) {
-  digitalWrite(latchPin, LOW);  // Set latch pin LOW to prevent changes while shifting
-  shiftOut(dataPin, clockPin, MSBFIRST, pattern); // Send the byte to the shift register
-  digitalWrite(latchPin, HIGH); // Set latch pin HIGH to update the output pins
-}
+int threshold = 30;
 
 void setup() {
-  // Initialize the pins as outputs
-  pinMode(latchPin, OUTPUT);
-  pinMode(clockPin, OUTPUT);
-  pinMode(dataPin, OUTPUT);
-  // updateShiftRegister(blank);
+  Serial.begin(115200);
+
+    // Set the touch pins as inputs
+  for (int i = 0; i < 8; i++) {
+    pinMode(TOUCH_PINS[i], INPUT);
+  }
+
+  // Configure LEDC for buzzer
+  ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
+  ledcAttachPin(BUZZER_PIN, PWM_CHANNEL); // Attach the buzzer pin to channel 0
 }
 
 void loop() {
-  updateShiftRegister(digits[0]); // Display '0'
+  // Loop through each touch pin
+  for (int i = 0; i < 8; i++) {
+
+    // Read and print the touch value
+    int touchValue = touchRead(TOUCH_PINS[i]);
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(touchValue);
+
+    // Check if the current touch pin is being touched
+    if (touchValue < threshold) {
+      // ledcWrite(BUZZER_PIN, TONE[i]);
+      tone(BUZZER_PIN, TONE[i]);
+      delay(150);
+      noTone(BUZZER_PIN);
+      // ledcWrite(BUZZER_PIN, 0); // Stop the tone after duration
+    }
+  }
 }

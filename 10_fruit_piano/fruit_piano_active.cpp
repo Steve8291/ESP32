@@ -1,6 +1,15 @@
 #include <Arduino.h>
 #include "pitches.h"
 
+// Uses Active Buzzer connected to BUZZER_PIN
+
+/*
+Using newer `ledcAttach` and `ledcWrite` functions for ESP32 PWM control.
+Requires newer arduino core 3.x supporting these functions.
+Install in `platformio.ini`:
+  platform = https://github.com/pioarduino/platform-espressif32/releases/download/stable/platform-espressif32.zip
+*/
+
 const int BUZZER_PIN = 25; // the buzzer pin
 const int TOUCH_PINS[] = { 4, 15, 13, 12, 14, 27, 33, 32 };
 
@@ -24,8 +33,7 @@ void setup() {
   }
 
   // Configure LEDC for buzzer
-  ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
-  ledcAttachPin(BUZZER_PIN, PWM_CHANNEL); // Attach the buzzer pin to channel 0
+  ledcAttach(BUZZER_PIN, PWM_FREQ, PWM_RESOLUTION);
 }
 
 void loop() {
@@ -33,6 +41,7 @@ void loop() {
   for (int i = 0; i < 8; i++) {
 
     // Read and print the touch value
+    // Comment out serial print to eliminate wobbling delay.
     int touchValue = touchRead(TOUCH_PINS[i]);
     Serial.print(i);
     Serial.print(": ");
@@ -40,10 +49,10 @@ void loop() {
 
     // Check if the current touch pin is being touched
     if (touchValue < threshold) {
-      // ledcWrite(BUZZER_PIN, TONE[i]);
-      tone(BUZZER_PIN, TONE[i], 150);
+      ledcWrite(BUZZER_PIN, TONE[i]);
       delay(150);
-      ledcWrite(BUZZER_PIN, 0); // Stop the tone after duration
+    } else {
+      ledcWrite(BUZZER_PIN, 0); // Stop the tone after duration 
     }
   }
 }
