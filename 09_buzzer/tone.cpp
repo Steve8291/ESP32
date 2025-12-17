@@ -2,39 +2,32 @@
 #include "pitches.h"
 
 // https://www.espboards.dev/blog/buzzer-with-esp32-s3/
+// Uses Passive 5v Buzzer (CYT1008) connected to BUZZER_PIN
 
-/*
-Using newer `ledcAttach` and `ledcWrite` functions for ESP32 PWM control.
-Requires newer arduino core 3.x supporting these functions.
-Install in `platformio.ini`:
-  platform = https://github.com/pioarduino/platform-espressif32/releases/download/stable/platform-espressif32.zip
-*/
+const int BUZZER_PIN = 14; // the buzzer pin
 
-const int buzzerPin = 14; // the buzzer pin
+// PWM Settings (for ESP32)
+const int PWM_CHANNEL = 0; // Use Channel 0
+// Matching pwm frequency to resonant frequency increases loudness
+const int PWM_FREQ = 2048; // CYT1008 resonant frequency is 2kHz - 4kHz
+const int PWM_RESOLUTION = 8; // 8-bit resolution (0-255)
 
 void setup()
 {
-  // ledcAttachPin(buzzerPin, 0); // Attach the buzzer pin to channel 0
-  ledcAttach(buzzerPin, 2000, 8); // Attach with 2kHz frequency and 8-bit resolution
+  // Configure LEDC for buzzer
+  ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RESOLUTION);
+  ledcAttachPin(BUZZER_PIN, PWM_CHANNEL);
 }
 
 void loop()
 {
-  // tone() function is used specifically in arduino. For ESP32, use ledcWrite() to generate tones.
-  // tone(buzzerPin, 1000); // Play a 1000 Hz tone
-  // delay(500); // For 500 milliseconds
-  // noTone(buzzerPin); // Stop the tone
-  // delay(500); // Wait for 500 milliseconds
-  
-  // tone(buzzerPin, NOTE_E4, 250); // Play a 2000 Hz tone for 250 milliseconds
-  ledcWriteTone(buzzerPin, NOTE_E4);
+  ledcWriteTone(PWM_CHANNEL, NOTE_E4);
   delay(500); // Wait for 500 milliseconds
-  ledcWriteTone(buzzerPin, 0); // Stop the tone
+  ledcWriteTone(PWM_CHANNEL, 0); // Stop the tone
   delay(500); // Wait for 500 milliseconds
 
-  // tone(buzzerPin, NOTE_D4, 250); // Play a 2000 Hz tone for 250 milliseconds
-  ledcWriteTone(buzzerPin, NOTE_D4);
+  ledcWriteTone(PWM_CHANNEL, NOTE_D4);
   delay(500); // Wait for 500 milliseconds
-  ledcWriteTone(buzzerPin, 0); // Stop the tone
+  ledcWriteTone(PWM_CHANNEL, 0); // Stop the tone
   delay(500); // Wait for 500 milliseconds
 }
