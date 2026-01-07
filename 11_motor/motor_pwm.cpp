@@ -5,7 +5,7 @@ int motor2A = 14;
 int enableA = 12;
 
 // PWM settings
-const int freq = 30000; // PWM frequency: 30000 Hz
+const int freq = 5000; // PWM frequency: 5 kHz (Adjust 2-20 kHz as needed)
 const int resolution = 8; // PWM resolution: 8 bits (dutyCycle: 0-255)
 const int pwmChannel = 0; // Use channel 0 for both motors
 int dutyCycle = 200;
