@@ -2,12 +2,15 @@
 
 int motor1A = 13;
 int motor2A = 14;
+int enableA = 12;
 
 
 void setup() {
   // initialize digital pin as an output.
   pinMode(motor1A, OUTPUT);
   pinMode(motor2A, OUTPUT);  
+  pinMode(enableA, OUTPUT);
+  digitalWrite(enableA, HIGH);
 }
 
 
