@@ -14,7 +14,7 @@ const int RESOLUTION = 12;         // 12-bit resolution for ESP32 ADC (0-4095)
 void setup() {
   pinMode(LEDPIN, OUTPUT);
   pinMode(POTPIN, INPUT);
-  analogWriteResolution(RESOLUTION); // Set the ADC resolution to 12 bits (0-4095)
+  analogReadResolution(RESOLUTION); // Set the ADC resolution to 12 bits (0-4095)
 }
 
 void loop() {

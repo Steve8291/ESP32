@@ -10,19 +10,19 @@ const int dataPin = 21;   // Pin connected to the DS pin of the 74HC595
   // a  b  c  d  e  f  g DP
   // 0  1  0  0  1  0  0  1
 byte digits[] = {
-  B00000011, // 0
-  B10011111, // 1
-  B00100101, // 2
-  B00001101, // 3
-  B10011001, // 4
-  B01001001, // 5
-  B01000001, // 6
-  B00011111, // 7
-  B00000001, // 8
-  B00001001 // 9
+  0b00000011, // 0
+  0b10011111, // 1
+  0b00100101, // 2
+  0b00001101, // 3
+  0b10011001, // 4
+  0b01001001, // 5
+  0b01000001, // 6
+  0b00011111, // 7
+  0b00000001, // 8
+  0b00001001 // 9
   };
 
-byte blank = B11111111; // All segments off
+byte blank = 0b11111111; // All segments off
 // byte blank_hex = 0xFF; // All segments off
 
 // byte digits_array[11] = {0x3, 0x9F, 0x25, 0xD, 0x99, 0x49, 0x41, 0x1F, 0x1, 0x9}; // Hex values for digits 0-9

@@ -3,6 +3,7 @@ To re-generate `compile_commands.json` for Clang-Tidy in VS Code, especially whe
 ```bash
 pio run -t compiledb
 ```
+Note: This no longer works on pioArduino. To fix open the Command Pallette in vsCode and type `pioarduino: Rebuild IntelliSense Index`
 
 ## Install pioArduino
 First you need to remove platformio:

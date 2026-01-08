@@ -1,65 +1,47 @@
+/*********
+  Rui Santos
+  Complete project details at https://randomnerdtutorials.com  
+  Default I2C Pins for ESP32 are:
+  GPIO 21 (SDA), GPIO 22 (SCL)
+*********/
 #include <Arduino.h>
-
-int motor1A = 13;
-int motor2A = 14;
-int enableA = 12;
-
-// PWM settings
-const int freq = 5000; // PWM frequency: 5 kHz (Adjust 2-20 kHz as needed)
-const int resolution = 8; // PWM resolution: 8 bits (dutyCycle: 0-255)
-const int pwmChannel = 0; // Use channel 0 for both motors
-int dutyCycle = 200;
-
+#include <Wire.h>
+ 
 void setup() {
-  // Set up PWM
-  ledcAttach(enableA, freq, resolution);
-  // ledcSetup(pwmChannel, freq, resolution);
-  // ledcAttachPin(enableA, pwmChannel);
-
-  pinMode(motor1A, OUTPUT);
-  pinMode(motor2A, OUTPUT);
-  pinMode(enableA, OUTPUT);
-
-  ledcWrite(enableA, dutyCycle);  // Enable motor with initial duty cycle
+  Wire.begin();
   Serial.begin(115200);
-  Serial.println("Testing DC Motor...");
+  Serial.println("\nI2C Scanner");
 }
-
+ 
 void loop() {
-  // Move the DC motor forward at maximum speed
-  Serial.println("Moving Forward");
-  digitalWrite(motor1A, LOW);
-  digitalWrite(motor2A, HIGH); 
-  delay(2000);
-
-  // Stop the DC motor
-  Serial.println("Motor stopped");
-  digitalWrite(motor1A, LOW);
-  digitalWrite(motor2A, LOW);
-  delay(1000);
-
-  // Move DC motor backwards at maximum speed
-  Serial.println("Moving Backwards");
-  digitalWrite(motor1A, HIGH);
-  digitalWrite(motor2A, LOW); 
-  delay(2000);
-
-  // Stop the DC motor
-  Serial.println("Motor stopped");
-  digitalWrite(motor1A, LOW);
-  digitalWrite(motor2A, LOW);
-  delay(1000);
-
-  // Move DC motor forward with increasing speed
-  digitalWrite(motor1A, HIGH);
-  digitalWrite(motor2A, LOW);
-  while (dutyCycle <= 255){
-    ledcWrite(enableA, dutyCycle);
-    // ledcWrite(pwmChannel, dutyCycle);
-    Serial.print("Forward with duty cycle: ");
-    Serial.println(dutyCycle);
-    dutyCycle = dutyCycle + 5;
-    delay(500);
+  byte error, address;
+  int nDevices;
+  Serial.println("Scanning...");
+  nDevices = 0;
+  for(address = 1; address < 127; address++ ) {
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+    if (error == 0) {
+      Serial.print("I2C device found at address 0x");
+      if (address<16) {
+        Serial.print("0");
+      }
+      Serial.println(address,HEX);
+      nDevices++;
+    }
+    else if (error==4) {
+      Serial.print("Unknow error at address 0x");
+      if (address<16) {
+        Serial.print("0");
+      }
+      Serial.println(address,HEX);
+    }    
   }
-  dutyCycle = 200;
+  if (nDevices == 0) {
+    Serial.println("No I2C devices found\n");
+  }
+  else {
+    Serial.println("done\n");
+  }
+  delay(5000);          
 }

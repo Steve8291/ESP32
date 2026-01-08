@@ -14,14 +14,14 @@ LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);
 
 // Define a custom character as an 8 byte array
 byte heart[] = {
-  B00000,
-  B00000,
-  B00000,
-  B01010,
-  B10101,
-  B10001,
-  B01010,
-  B00100
+  0b00000,
+  0b00000,
+  0b00000,
+  0b01010,
+  0b10101,
+  0b10001,
+  0b01010,
+  0b00100
 };
 
 
