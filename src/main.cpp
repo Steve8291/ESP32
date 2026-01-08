@@ -12,8 +12,9 @@ int dutyCycle = 200;
 
 void setup() {
   // Set up PWM
-  ledcSetup(pwmChannel, freq, resolution);
-  ledcAttachPin(enableA, pwmChannel);
+  ledcAttach(enableA, freq, resolution);
+  // ledcSetup(pwmChannel, freq, resolution);
+  // ledcAttachPin(enableA, pwmChannel);
 
   pinMode(motor1A, OUTPUT);
   pinMode(motor2A, OUTPUT);
