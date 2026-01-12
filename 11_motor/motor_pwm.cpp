@@ -7,18 +7,16 @@ int enableA = 12;
 // PWM settings
 const int freq = 5000; // PWM frequency: 5 kHz (Adjust 2-20 kHz as needed)
 const int resolution = 8; // PWM resolution: 8 bits (dutyCycle: 0-255)
-const int pwmChannel = 0; // Use channel 0 for both motors
+// const int pwmChannel = 0; // Use channel 0 for both motors
 int dutyCycle = 200;
 
 void setup() {
-  // Set up PWM
-  ledcSetup(pwmChannel, freq, resolution);
-  ledcAttachPin(enableA, pwmChannel);
-
   pinMode(motor1A, OUTPUT);
   pinMode(motor2A, OUTPUT);
   pinMode(enableA, OUTPUT);
 
+    // Set up PWM
+  ledcAttach(enableA, freq, resolution);
   ledcWrite(enableA, dutyCycle);  // Enable motor with initial duty cycle
   Serial.begin(115200);
   Serial.println("Testing DC Motor...");

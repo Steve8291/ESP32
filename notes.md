@@ -10,6 +10,7 @@ First you need to remove platformio:
 1) Uninstall the extension
 2) Delete the hidden directory: `sudo rm -r ~/.platformio`
 3) Restart vsCode and install pioArduino
+4) Run a Clean and Full Clean after changing your "platform" in `platformio.ini`
 
 ## Fix your `platformio.ini` file
 To use the latest 3.x version of the Arduino core for the ESP32 change your platform as follows:  
