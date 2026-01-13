@@ -37,7 +37,7 @@ void setup() {
   pinMode(motor1A, OUTPUT);
   pinMode(motor2A, OUTPUT);
 
-    // Set up PWM
+  // Set up PWM
   ledcAttach(enableA, freq, resolution);
   ledcWrite(enableA, 0);  // Start with motor stopped
 }
@@ -47,7 +47,7 @@ void setup() {
 void loop() {
   forward(255, 2000); // Move forward at speed 255 for 2 seconds
   stop(1000);         // Stop for 1 second
-  reverse(200, 2000); // Move backward at speed 200 for 2 seconds
+  reverse(210, 2000); // Move backward at speed 210 for 2 seconds
   stop(1000);         // Stop for 1 second
 
   // Move DC motor forward with increasing speed
