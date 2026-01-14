@@ -19,3 +19,10 @@ To use the latest 3.x version of the Arduino core for the ESP32 change your plat
 To use Arduino 2.x:
 `platform = espressif32 @ 6.12.0`
 See this to figure out versions: https://github.com/sivar2311/platform-espressif32-versions/blob/main/README.md
+
+
+## Find Crystal Frequency:
+In termainl run: `esptool -p /dev/ttyUSB0 chip-id`  
+Note: you might need to replace /dev/ttyUSB0 with your ESP32 port.  
+Then set the resulting Crystal frequency in your `platformio.ini`  
+`board_xtal_freq = 40MHz`

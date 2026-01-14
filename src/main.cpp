@@ -45,9 +45,9 @@ void setup() {
 
 
 void loop() {
-  forward(255, 2000); // Move forward at speed 255 for 2 seconds
+  forward(255, 10000); // Move forward at speed 255 for 2 seconds
   stop(1000);         // Stop for 1 second
-  reverse(210, 2000); // Move backward at speed 210 for 2 seconds
+  reverse(255, 10000); // Move backward at speed 255 for 10 seconds
   stop(1000);         // Stop for 1 second
 
   // Move DC motor forward with increasing speed
