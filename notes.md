@@ -20,15 +20,12 @@ git config --global user.email "$githubemail"
 code --install-extension "ms-vscode.cpptools-extension-pack" # C and C++ coding language extension for VSCode
 code --install-extension "pioarduino.pioarduino-ide" # PlatformIO Arduino extension for VSCode
 code --install-extension "timonwong.shellcheck" # ShellCheck extension for VSCode
-# code --install-extension "CS128.cs128-clang-tidy" # Clang-Tidy extension for VSCode
-code --install-extension "llvm-vs-code-extensions.vscode-clangd" # Clangd linter and IntelliSense
+code --install-extension "CS128.cs128-clang-tidy" # Clang-Tidy extension for VSCode
 ```
 
 # General Installation Fixes
-## Fix flagging `#include <Arduino.h>`
-1) Install extension `clangd` by LLVM.
-2) vsCode will ask if you want to disable Microsoft Intellisense. Disable it.
-2) To re-generate `compile_commands.json` for Clang-Tidy in VS Code, especially when working with Arduino projects that include `<Arduino.h>`, you need a method to capture the compilation commands used by the Arduino build system.
+## Fix Clang-Tidy flagging `#include <Arduino.h>`
+Re-generate `compile_commands.json` for Clang-Tidy in VS Code, especially when working with Arduino projects that include `<Arduino.h>`, you need a method to capture the compilation commands used by the Arduino build system.
 ```bash
 pio run -t compiledb
 ```
