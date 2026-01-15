@@ -1,16 +1,39 @@
-## Fix clang-tidy flagging `#include <Arduino.h>`
-To re-generate `compile_commands.json` for Clang-Tidy in VS Code, especially when working with Arduino projects that include `<Arduino.h>`, you need a method to capture the compilation commands used by the Arduino build system.
+# Install pioArduino and Remove platformio
+First you need to remove platformio:
+1) Uninstall the extension
+2) Delete `.pio/` and `.vscode/` and `compile_commands.json` from your projects.
+3) Delete the hidden directory: `sudo rm -r ~/.platformio`
+4) Restart vsCode and double check to be sure `~/.platformio` wasn't recreated.
+5) Install pioArduino extension
+6) Run a Clean and Full Clean after changing your "platform" in `platformio.ini`
+
+# Fresh Install of vsCode and pioArduino
+```bash
+sudo snap install --classic code
+sudo apt install git
+# sudo apt install clang-tidy
+sudo apt install python3-venv
+curl -LsSf https://astral.sh/uv/install.sh | sh  # Install uv for VSCode pioArduino
+git config --global user.name "$githubusername"
+git config --global user.email "$githubemail"
+# vsCode Extensions:
+code --install-extension "ms-vscode.cpptools-extension-pack" # C and C++ coding language extension for VSCode
+code --install-extension "pioarduino.pioarduino-ide" # PlatformIO Arduino extension for VSCode
+code --install-extension "timonwong.shellcheck" # ShellCheck extension for VSCode
+# code --install-extension "CS128.cs128-clang-tidy" # Clang-Tidy extension for VSCode
+code --install-extension "llvm-vs-code-extensions.vscode-clangd" # Clangd linter and IntelliSense
+```
+
+# General Installation Fixes
+## Fix flagging `#include <Arduino.h>`
+1) Install extension `clangd` by LLVM.
+2) vsCode will ask if you want to disable Microsoft Intellisense. Disable it.
+2) To re-generate `compile_commands.json` for Clang-Tidy in VS Code, especially when working with Arduino projects that include `<Arduino.h>`, you need a method to capture the compilation commands used by the Arduino build system.
 ```bash
 pio run -t compiledb
 ```
-Note: This no longer works on pioArduino. To fix open the Command Pallette in vsCode and type `pioarduino: Rebuild IntelliSense Index`
+You should re-run this command every time you make changes to your `.platformio.ini` file's: platform, board, or framework. You do not need to delete `compile_commands.json` first.
 
-## Install pioArduino
-First you need to remove platformio:
-1) Uninstall the extension
-2) Delete the hidden directory: `sudo rm -r ~/.platformio`
-3) Restart vsCode and install pioArduino
-4) Run a Clean and Full Clean after changing your "platform" in `platformio.ini`
 
 ## Fix your `platformio.ini` file
 To use the latest 3.x version of the Arduino core for the ESP32 change your platform as follows:  
@@ -26,3 +49,12 @@ In termainl run: `esptool -p /dev/ttyUSB0 chip-id`
 Note: you might need to replace /dev/ttyUSB0 with your ESP32 port.  
 Then set the resulting Crystal frequency in your `platformio.ini`  
 `board_xtal_freq = 40MHz`
+
+## Remove files already tracked in git
+If you have added a file to your `.gitignore` but it was previously uploaded to git, your `.gitignore` will not work. You must first run these example commands.
+```bash
+git rm --cached -r .vscode/
+git rm --cached compile_commands.json
+git commit -m "Remove .vscode and compile_commands.json from tracking"
+```
+Then push the commit in Source Control
