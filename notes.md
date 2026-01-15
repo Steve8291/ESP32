@@ -58,3 +58,11 @@ git rm --cached compile_commands.json
 git commit -m "Remove .vscode and compile_commands.json from tracking"
 ```
 Then push the commit in Source Control
+
+## .gitignore File
+```bash
+.pio/
+.vscode/
+compile_commands.json
+.DS_Store
+```
