@@ -1,11 +1,12 @@
 # Install pioArduino and Remove platformio
 First you need to remove platformio:
-1) Uninstall the extension
+1) Uninstall the extension.
 2) Delete `.pio/` and `.vscode/` and `compile_commands.json` from your projects.
 3) Delete the hidden directory: `sudo rm -r ~/.platformio`
-4) Restart vsCode and double check to be sure `~/.platformio` wasn't recreated.
-5) Install pioArduino extension
-6) Run a Clean and Full Clean after changing your "platform" in `platformio.ini`
+4) Restart vsCode and double check to be sure `~/.platformio` wasn't recreated and `platformio` didn't reinstall.
+5) Install pioArduino extension.
+6) Delete `.pio/` and `.vscode/` and `compile_commands.json` again and close and reopen your project.
+7) Run a Full Clean after changing your "platform" in `platformio.ini`
 
 # Fresh Install of vsCode and pioArduino
 ```bash
@@ -30,6 +31,7 @@ Re-generate `compile_commands.json` for Clang-Tidy in VS Code, especially when w
 pio run -t compiledb
 ```
 You should re-run this command every time you make changes to your `.platformio.ini` file's: platform, board, or framework. You do not need to delete `compile_commands.json` first.
+Note: If `pio` commands fail with command not found you are probably in a "bash" terminal session with your system profile $PATH. You need to open a new terminal window that has "pioarduino CLI" as its profile. This will have the proper $PATH to pio set up.
 
 
 ## Fix your `platformio.ini` file
