@@ -49,6 +49,12 @@ Note: you might need to replace /dev/ttyUSB0 with your ESP32 port.
 Then set the resulting Crystal frequency in your `platformio.ini`  
 `board_xtal_freq = 40MHz`
 
+## Platformio Port Not Readable:
+Caused by Linux permissions issue. Add user account to dialout group and log out and back in.
+```bash
+sudo usermod -a -G dialout your_username
+```
+
 ## Remove files already tracked in git
 If you have added a file to your `.gitignore` but it was previously uploaded to git, your `.gitignore` will not work. You must first run these example commands.
 ```bash
