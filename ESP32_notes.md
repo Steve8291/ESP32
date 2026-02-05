@@ -37,6 +37,7 @@ Note: If `pio` commands fail with command not found you are probably in a "bash"
 ## Fix your `platformio.ini` file
 To use the latest 3.x version of the Arduino core for the ESP32 change your platform as follows:  
 `platform = https://github.com/pioarduino/platform-espressif32/releases/download/stable/platform-espressif32.zip`
+Note: This uses C++20
 
 To use Arduino 2.x:
 `platform = espressif32 @ 6.12.0`
