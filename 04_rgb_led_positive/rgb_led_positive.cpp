@@ -16,7 +16,7 @@ void redLight(int duration = 1000) {
 }
 
 
-void greeenLight(int duration = 1000) {
+void greenLight(int duration = 1000) {
   // Green (turn just the green LED on)
   digitalWrite(RED_PIN, HIGH);
   digitalWrite(GREEN_PIN, LOW);
@@ -66,7 +66,7 @@ void loop() {
 
   offLight();
   blueLight(4000);
-  greeenLight(4000);
+  greenLight(4000);
   redLight(4000);
   purpleLight(4000);
   myColor(4000);
