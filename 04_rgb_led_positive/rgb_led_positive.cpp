@@ -61,7 +61,13 @@ void setup() {
   pinMode(GREEN_PIN, OUTPUT);
   pinMode(BLUE_PIN, OUTPUT);
 }
-
+void redLight(int duration = 1000) {
+  // Red (turn just the red LED on)
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(GREEN_PIN, HIGH);
+  digitalWrite(BLUE_PIN, HIGH);
+  delay(duration);
+}
 void loop() {
 
   offLight();
