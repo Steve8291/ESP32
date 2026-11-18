@@ -1,60 +1,84 @@
 #include <Arduino.h>
 
-int motor1A = 13;
-int motor2A = 14;
-int enableA = 27;
+// Variables & Constants
+const int boardVersion = 1; // Constant integer (cannot be changed)
+int counter = 0; // Variable integer (can be changed) Whole Numbers only
+float voltage = 4.95; // Variable float (can be changed) Decimal Numbers allowed
+bool isReady = true; // Variable boolean (can be changed) True or False
+int totalItems = 4;
+String myName = "Steve"; // Variable String (can be changed) Textual data
 
-// PWM settings
-const int freq = 20000; // PWM frequency: 20 kHz (Adjust 2-20 kHz as needed)
-const int resolution = 8; // PWM resolution: 8 bits (dutyCycle: 0-255)
+
+// Arrays
+int sensorReadings[] = {512, 1023, 256, 768}; // Array of integers
 
 
-void stop(int rtime) {
-  digitalWrite(motor1A, LOW);
-  digitalWrite(motor2A, LOW);
-  ledcWrite(enableA, 0);
-  delay(rtime);
+// Function takes a String parameter with no return value
+void printGreeting(String userName) {
+  Serial.print("Hello, ");
+  Serial.println(userName);
 }
 
-void forward(int spd, int rtime) {
-  digitalWrite(motor1A, HIGH);
-  digitalWrite(motor2A, LOW);
-  ledcWrite(enableA, spd);
-  delay(rtime);
+// Function that takes an integer parameter and returns an integer
+int sum(int a, int b) {
+  Serial.print("The sum of ");
+  Serial.print(a);
+  Serial.print(" and ");
+  Serial.print(b);
+  return a + b;
 }
-
-void reverse(int spd, int rtime) {
-  digitalWrite(motor1A, LOW);
-  digitalWrite(motor2A, HIGH);
-  ledcWrite(enableA, spd);
-  delay(rtime);
-}
-
-
 
 void setup() {
   Serial.begin(115200);
-  pinMode(motor1A, OUTPUT);
-  pinMode(motor2A, OUTPUT);
 
-  // Set up PWM
-  ledcAttach(enableA, freq, resolution);
-  ledcWrite(enableA, 0);  // Start with motor stopped
+  Serial.println();
+  Serial.print("Board Version: ");
+  Serial.println(boardVersion);
+  Serial.print("Sensor Reading 1: ");
+  Serial.println(sensorReadings[0]);
+  Serial.print("Last Sensor Reading: ");
+  Serial.println(sensorReadings[3]);
+
+  // 'for' loop stepping through the array
+  for (int i = 0; i < 4; i++) {
+    Serial.println(i);
+  }
+
+  // for loop to iterate through the array and print each value
+  for (int i = 0; i < totalItems; i++) {
+    Serial.println(sensorReadings[i]);
+  }
+
+  // 'while' loop counting up to 3
+  while (counter <= 3) {
+    Serial.println(counter);
+    counter++;
+  }
+
+  printGreeting("Bobby");
+  printGreeting(myName);
+
+  int result = sum(5, 10);
+  Serial.print("\nResult: ");
+  Serial.println(result);
+
+  // if statement to check if result is greater than 10
+  if (result > 10 && isReady) {
+    Serial.println("Result is greater than 10");
+  } else if (result == 10) {
+    Serial.println("Result is equal to 10");
+  } else if (result < 10) {
+    Serial.println("Result is less than 10");
+  } else if (!isReady) {
+    Serial.println("System is not ready");
+  }
+
+
+
 }
 
 
 
 void loop() {
-  forward(255, 10000); // Move forward at speed 255 for 2 seconds
-  stop(1000);         // Stop for 1 second
-  reverse(255, 10000); // Move backward at speed 255 for 10 seconds
-  stop(1000);         // Stop for 1 second
 
-  // Move DC motor forward with increasing speed
-  for (int spd = 200; spd <= 255; spd += 5) {
-    Serial.println(spd);
-    forward(spd, 500);
-  }
-
-  stop(1000);
 }
